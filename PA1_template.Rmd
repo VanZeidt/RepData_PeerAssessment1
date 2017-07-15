@@ -59,6 +59,7 @@ Calculate and report the total number of missing values in the dataset (i.e. the
 ```{r}
 sum(is.na(activity_df))
 ```
+Imputing strategy: use the mean for a given interval across all days.
 ```{r}
 activity_df_imputed <- activity_df
 missing_idx <- which(is.na(activity_df$steps))
