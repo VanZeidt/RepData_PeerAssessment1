@@ -122,7 +122,12 @@ $(document).ready(function () {
 
 <div id="loading-and-preprocessing-the-data" class="section level2">
 <h2>Loading and preprocessing the data</h2>
-<pre class="r"><code>unzip(zipfile = 'activity.zip')
+<pre class="r"><code>list.of.packages &lt;- c(&quot;ggplot2&quot;, &quot;data.table&quot;, &quot;xtable&quot;)
+new.packages &lt;- list.of.packages[!(list.of.packages %in%     
+  installed.packages()[,&quot;Package&quot;])]
+if(length(new.packages)) install.packages(new.packages)
+
+unzip(zipfile = 'activity.zip')
 activity_df &lt;- read.csv(file = 'activity.csv')</code></pre>
 </div>
 <div id="what-is-mean-total-number-of-steps-taken-per-day" class="section level2">
@@ -134,7 +139,7 @@ steps_by_day &lt;- setDT(activity_df[!is.na(activity_df$steps), ])[, list(steps_
 <pre class="r"><code>xt &lt;- xtable(head(steps_by_day))
 print(xt, type='html')</code></pre>
 <!-- html table generated in R 3.3.2 by xtable 1.8-2 package -->
-<!-- Sat Jul 15 20:43:44 2017 -->
+<!-- Sat Jul 15 21:38:46 2017 -->
 <table border="1">
 <tr>
 <th>
@@ -240,6 +245,7 @@ ggplot(activity_pattern, aes(interval, mean_steps_in_interval)) + geom_line() + 
 <p>Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)</p>
 <pre class="r"><code>sum(is.na(activity_df))</code></pre>
 <pre><code>## [1] 2304</code></pre>
+<p>Imputing strategy: use the mean for a given interval across all days.</p>
 <pre class="r"><code>activity_df_imputed &lt;- activity_df
 missing_idx &lt;- which(is.na(activity_df$steps))
 activity_df_imputed$steps[missing_idx] &lt;- sapply(missing_idx, function(idx) activity_pattern$mean_steps_in_interval[which(activity_pattern$interval==activity_df$interval[idx])] )

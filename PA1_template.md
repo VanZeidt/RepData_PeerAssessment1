@@ -4,6 +4,11 @@
 ## Loading and preprocessing the data
 
 ```r
+list.of.packages <- c("ggplot2", "data.table", "xtable")
+new.packages <- list.of.packages[!(list.of.packages %in%     
+  installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+
 unzip(zipfile = 'activity.zip')
 activity_df <- read.csv(file = 'activity.csv')
 ```
@@ -30,7 +35,7 @@ print(xt, type='html')
 ```
 
 <!-- html table generated in R 3.3.2 by xtable 1.8-2 package -->
-<!-- Sat Jul 15 20:43:44 2017 -->
+<!-- Sat Jul 15 21:38:46 2017 -->
 <table border=1>
 <tr> <th>  </th> <th> date </th> <th> steps_daily </th>  </tr>
   <tr> <td align="right"> 1 </td> <td> 2012-10-02 </td> <td align="right"> 126 </td> </tr>
@@ -109,6 +114,7 @@ sum(is.na(activity_df))
 ```
 ## [1] 2304
 ```
+Imputing strategy: use the mean for a given interval across all days.
 
 ```r
 activity_df_imputed <- activity_df
